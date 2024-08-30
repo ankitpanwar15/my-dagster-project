@@ -2,9 +2,21 @@
 
 This dataset includes information on movies released during the summer months, typically regarded as the peak season for blockbuster films. The data has been sourced from IMDb, featuring key details such as movie titles, release dates, genres, directors, cast, and IMDb ratings. It's an excellent resource for analyzing trends in summer movie releases, exploring the correlation between release timing and box office performance, or studying the impact of genre on audience reception. This dataset is ideal for data enthusiasts, researchers, and movie buffs interested in exploring the dynamics of summer cinema.
 
+summer_movies.csv ==> It has column information about movies released with columns like, name, release date, runtime, avg rating, votes, release date, timestamp. Here unique id is tconst
+
+\*\* release date, timestamp these both columns are manually generated
+
+summer_movie_genres.csv ==> It has imformation about the genres of the corresponding movies, with columns, tconst and genres.
+
 ## Getting started
 
 ### Dagster
+
+dagster, version 1.7.7
+
+```bash
+pip install dagster dagster-webserver
+```
 
 ```bash
 pip install -e ".[dev]"

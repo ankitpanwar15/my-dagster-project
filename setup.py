@@ -4,8 +4,8 @@ setup(
     name="my_dagster_project",
     packages=find_packages(exclude=["my_dagster_project_tests"]),
     install_requires=[
-        "dagster",
-        "dagster-cloud",
+        "dagster==1.7.7",
+        "dagster-cloud==1.7.7",
         "pandas",
         "mysql-connector-python"
     ],
