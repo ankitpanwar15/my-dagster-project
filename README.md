@@ -1,10 +1,10 @@
 # my_dagster_project
 
-This is a [Dagster](https://dagster.io/) project scaffolded with [`dagster project scaffold`](https://docs.dagster.io/getting-started/create-new-project).
+This dataset includes information on movies released during the summer months, typically regarded as the peak season for blockbuster films. The data has been sourced from IMDb, featuring key details such as movie titles, release dates, genres, directors, cast, and IMDb ratings. It's an excellent resource for analyzing trends in summer movie releases, exploring the correlation between release timing and box office performance, or studying the impact of genre on audience reception. This dataset is ideal for data enthusiasts, researchers, and movie buffs interested in exploring the dynamics of summer cinema.
 
 ## Getting started
 
-First, install your Dagster code location as a Python package. By using the --editable flag, pip will install your Python package in ["editable mode"](https://pip.pypa.io/en/latest/topics/local-project-installs/#editable-installs) so that as you develop, local code changes will automatically apply.
+Dagster
 
 ```bash
 pip install -e ".[dev]"
@@ -18,7 +18,17 @@ dagster dev
 
 Open http://localhost:3000 with your browser to see the project.
 
-You can start writing assets in `my_dagster_project/assets.py`. The assets are automatically loaded into the Dagster code location as you define them.
+SQL Server Setup
+
+1. Go to this site, and login [freesqldatabase](https://www.freesqldatabase.com/)
+2. Take help from this [video](https://youtu.be/TMGHOW8Hzvw?si=FMUGmkbhbglSOd5d) and get your db credentials.
+3. Provide DB credentials in `.env` file.
+
+FYI: Creds are already available, clone and run dagster using
+
+```bash
+dagster dev
+```
 
 ## Development
 
