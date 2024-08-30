@@ -4,7 +4,7 @@ This dataset includes information on movies released during the summer months, t
 
 ## Getting started
 
-Dagster
+# Dagster
 
 ```bash
 pip install -e ".[dev]"
@@ -18,7 +18,7 @@ dagster dev
 
 Open http://localhost:3000 with your browser to see the project.
 
-SQL Server Setup
+# SQL Server Setup
 
 1. Go to this site, and login [freesqldatabase](https://www.freesqldatabase.com/)
 2. Take help from this [video](https://youtu.be/TMGHOW8Hzvw?si=FMUGmkbhbglSOd5d) and get your db credentials.
