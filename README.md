@@ -10,9 +10,7 @@ summer_movie_genres.csv ==> It has imformation about the genres of the correspon
 
 ## Getting started
 
-### Dagster
-
-dagster, version 1.7.7
+### Dagster, version 1.7.7
 
 ```bash
 pip install dagster dagster-webserver
