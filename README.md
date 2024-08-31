@@ -13,9 +13,20 @@ summer_movies.csv ==> It has column information about movies released with colum
 summer_movie_genres.csv ==> It has imformation about the genres of the corresponding movies, with columns, tconst and genres.
 
 **Output**
+
 We want to get movie and there genres by joining these data set together.
 
 ## Getting started
+
+### Python Virtual environment
+
+Create a virtual environment to install the specified version of libraries.
+
+```bash
+python -m venv myenv
+
+source myenv/bin/activate
+```
 
 ### Dagster, version 1.7.7
 
