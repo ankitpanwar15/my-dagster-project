@@ -52,7 +52,7 @@ Open http://localhost:3000 with your browser to see the project.
 2. Take help from this [video](https://youtu.be/TMGHOW8Hzvw?si=FMUGmkbhbglSOd5d) and get your db credentials.
 3. Provide DB credentials in `.env` file.
 
-**Creds are already available, clone repo and run dagster.**
+**Credentials are already available, clone repo and run dagster. Auto expired after 7 days**
 
 ## Flow
 
