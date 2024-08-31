@@ -60,6 +60,10 @@ Open http://localhost:3000 with your browser to see the project.
 
 ## Flow
 
+**Using IOManager for reading and writing the data to warehouse_location and transectional table.**
+
+why:- I/O managers in Dagster are used to handle the storage and retrieval of asset and op outputs, allowing you to separate business logic from I/O operations.
+
 ### Extraction, (group_name="extract")
 
 1. Extract data from souce, in this case its data folder and load into a central location like AWS S3. In my case its `warehouse_location/result`
@@ -96,8 +100,6 @@ Daily partition:- 365*10 = 3650
 ** You can keep 3 yr to 4 yr data in standard layer and push other to glacier to efficient storage and processing.
 ```
 
-**Using IOManager for reading and writing the data to warehouse_location and transectional table.**
-
 Better approach would be partition on `type/date` (e.g. hollywood/date)
 
 ### Transformation, (group_name="transformation")
@@ -112,7 +114,7 @@ Read master data and load into warehouse table, in my case its transectional tab
 
 ### Job
 
-Bundled all components of the data flow into a job. This is helpful for manageing and setting up schedules.
+Bundled all components of the data flow into a job. This is helpful for managing and setting up schedules.
 
 ### Schedules
 

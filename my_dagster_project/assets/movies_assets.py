@@ -3,16 +3,7 @@ from dagster import asset, AssetCheckResult, multi_asset_check, Definitions, Ass
 from sqlalchemy import create_engine
 from datetime import datetime
 from ..partitions import Daily_partition
-
-db_user = "sql12728197"
-db_password = "7fz7Efym5T"
-db_host = "sql12.freesqldatabase.com"
-db_port = 3306
-db_name = "sql12728197"
-
-connection_string = f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
-
-engine = create_engine(connection_string)
+from ..io import db_conn
 
 def parse_date(date_str):
     return datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
@@ -145,11 +136,9 @@ def summer_movies(context, extract_movie: pd.DataFrame) -> pd.DataFrame:
     )
 def transform_movie_data(context: AssetExecutionContext) -> pd.DataFrame:
     
-    with engine.connect() as connection:
+    with db_conn.get_sql_conn().connect() as connection:
         summer_movie_genres_data = pd.read_sql("SELECT * FROM summer_movie_genres", connection)
-    
-    # Read data from the second table
-    with engine.connect() as connection:
+        
         summer_movies_data = pd.read_sql("SELECT * FROM summer_movies", connection)
     
     # Perform the join operation
