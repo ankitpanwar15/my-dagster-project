@@ -56,6 +56,7 @@ Open http://localhost:3000 with your browser to see the project.
 
 ## Sneak peek
 
+!Alt text
 <img src="https://unsplash.com/photos/young-asian-travel-woman-is-enjoying-with-beautiful-place-in-bangkok-thailand-_Fqoswmdmoo" alt="Alt text">
 
 ## Flow
