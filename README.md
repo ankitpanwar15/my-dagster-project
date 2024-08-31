@@ -1,12 +1,15 @@
 # my_dagster_project
 
-This dataset includes information on movies released during the summer months, typically regarded as the peak season for blockbuster films. The data has been sourced from IMDb, featuring key details such as movie titles, release dates, genres, directors, cast, and IMDb ratings. It's an excellent resource for analyzing trends in summer movie releases, exploring the correlation between release timing and box office performance, or studying the impact of genre on audience reception. This dataset is ideal for data enthusiasts, researchers, and movie buffs interested in exploring the dynamics of summer cinema.
+This dataset includes information on movies released during the summer months, typically regarded as the peak season for blockbuster films.
+\*\*Why pick:- Easy to relate and play around, instead of picking F1 or Cricket data set.
 
 summer_movies.csv ==> It has column information about movies released with columns like, name, release date, runtime, avg rating, votes, release date, timestamp. Here unique id is tconst
 
 \*\* release date, timestamp these both columns are manually generated
 
 summer_movie_genres.csv ==> It has imformation about the genres of the corresponding movies, with columns, tconst and genres.
+
+We want to get movie and there genres by joining these data set together.
 
 ## Getting started
 
@@ -34,17 +37,58 @@ Open http://localhost:3000 with your browser to see the project.
 2. Take help from this [video](https://youtu.be/TMGHOW8Hzvw?si=FMUGmkbhbglSOd5d) and get your db credentials.
 3. Provide DB credentials in `.env` file.
 
-FYI: Creds are already available, clone and run dagster using
+FYI: Creds are already available, clone repo and run dagster.
+
+## Flow
+
+### Extraction, (group_name="extract")
+
+1. Extract data from souce, in this case its data folder and load into a central location like AWS S3. In my case its `warehouse_location/result`
+2. Keep in raw fomat as it was in source, if there is a variance you would know where is the issue.
+3. Store with efficient data file format (e.g., Parquet with run length encoding)
+
+### Staging, (group_name="stg")
+
+1. Read from `warehouse_location` and write data to transaction table.
 
 ```bash
-dagster dev
+summer_movies.csv ==> summer_movies
+summer_movie_genres.csv ==> summer_movie_genres
 ```
 
-## Development
+2. Cleaning: Remove duplicate records, Handle missing values (e.g., impute missing ages, fill missing purchase history with zero),
+   and Correct any inconsistencies in data (e.g., standardize date formats).
 
-### Adding new Python dependencies
+```bash
+df['runtime_minutes'] = df['runtime_minutes'].fillna(df['runtime_minutes'].mean())
+df['year'] = df['year'].fillna(9999)
+df['timestamp'] = df['timestamp'].apply(parse_date)
+```
 
-You can specify new Python dependencies in `setup.py`.
+3. summer_movies table is partitioned on `release_day` daily instead of hourly.
+   \*\*why:- with a partition is created a metadata will also be maintained corresponding to it. When there are too many partitions, it can lead to overhead metadata and Small File Problem. this would not be ideal for distributed prosessing large dataset.
+
+```bash
+Consider 10 years of data
+hourly partition:- 24*365*10 = 87600
+Daily partition:- 365*10 = 3650
+
+** You can keet 3 year to 4 year data in standard layer and push other to glacier to efficient storage and processing.
+```
+
+\*\*Using IOManager for reading and writing the data to warehouse_location and transectional table.
+
+Better approach would be partition on `type/date` (e.g. hollywood/date)
+
+### Transformation, (group_name="transformation")
+
+Merge data from `summer_movies` and `summer_movie_genres`, and store into processed folder of warehouse location in paquet format.
+
+\*\* Why:- This would be master data that would be used by data science, downstream data team and populate warehouse.
+
+### Loading, (group_name="load")
+
+Read master data and load into warehouse table, in my case its transectional table.
 
 ### Unit testing
 

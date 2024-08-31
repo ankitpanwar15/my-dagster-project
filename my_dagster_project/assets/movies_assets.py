@@ -14,6 +14,9 @@ connection_string = f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}:{
 
 engine = create_engine(connection_string)
 
+def parse_date(date_str):
+    return datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+
 @asset(
     check_specs=[AssetCheckSpec(name="check_count", asset="extract_movie_genres")],
     group_name="extract", 
@@ -117,6 +120,7 @@ def summer_movies(context, extract_movie: pd.DataFrame) -> pd.DataFrame:
         
         df['runtime_minutes'] = df['runtime_minutes'].fillna(df['runtime_minutes'].mean())
         df['year'] = df['year'].fillna(9999)
+        # df['timestamp'] = df['timestamp'].apply(parse_date)
         
         yield Output(df, metadata=metadata)
         
@@ -140,33 +144,6 @@ def summer_movies(context, extract_movie: pd.DataFrame) -> pd.DataFrame:
     io_manager_key="file_io"
     )
 def transform_movie_data(context: AssetExecutionContext) -> pd.DataFrame:
-    
-    # Read data from the first table
-    
-    # partition_date = context.partition_key
-    
-    # sql = """
-    #     select
-    #         movies.title_type,
-    #         movies.primary_title,
-    #         movies.original_title,
-    #         movies.year AS year_released,
-    #         movies.runtime_minutes,
-    #         movies.average_rating,
-    #         movies.num_votes,
-    #         genres.genres,
-    #         movies.release_date
-    #     from summer_movies movies
-    #     join summer_movie_genres genres 
-    #     on movies.tconst = genres.tconst
-    #     where movies.release_date >= '{partition_date}'::date
-    #     and movies.release_date < '{partition_date}'::date
-    # """
-    
-    # # Perform the join operation
-    # with engine.connect() as connection:
-    #     joined_data = pd.read_sql(sql, connection)
-
     
     with engine.connect() as connection:
         summer_movie_genres_data = pd.read_sql("SELECT * FROM summer_movie_genres", connection)
@@ -192,9 +169,6 @@ def transform_movie_data(context: AssetExecutionContext) -> pd.DataFrame:
         description="Count check",
     )
 
-def parse_date(date_str):
-    return datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
-
 @asset(
     check_specs=[AssetCheckSpec(name="check_count", asset="joined_movie_genres")],
     group_name="load", 
@@ -206,8 +180,6 @@ def joined_movie_genres(context, transform_movie_data: pd.DataFrame) -> pd.DataF
     try:
         context.log.info(transform_movie_data.head())
         df = transform_movie_data
-        
-        # df['timestamp'] = df['timestamp'].apply(parse_date)
         
         metadata = {
             "row_count": len(df),
