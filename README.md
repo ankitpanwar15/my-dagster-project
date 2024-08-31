@@ -8,7 +8,7 @@ This dataset includes information on movies released during the summer months, t
 
 `summer_movies.csv` ==> It has column information about movies released with columns like, name, release date, runtime, avg rating, votes, release date, timestamp. Here unique id is tconst
 
-**Note: Release date, timestamp these both columns are manually generated**
+**Note:** Release date, timestamp these both columns are manually generated
 
 `summer_movie_genres.csv` ==> It has imformation about the genres of the corresponding movies, with columns, tconst and genres.
 
