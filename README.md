@@ -65,7 +65,8 @@ df['year'] = df['year'].fillna(9999)
 df['timestamp'] = df['timestamp'].apply(parse_date)
 ```
 
-3. summer_movies table is partitioned on `release_day` daily instead of hourly.
+3. summer_movies table is partitioned on `release_day` daily instead of hourly. With START_DATE = '2024-01-01'
+   and END_DATE = '2024-01-12'
    \*\*why:- with a partition is created a metadata will also be maintained corresponding to it. When there are too many partitions, it can lead to overhead metadata and Small File Problem. this would not be ideal for distributed prosessing large dataset.
 
 ```bash
@@ -73,7 +74,7 @@ Consider 10 years of data
 hourly partition:- 24*365*10 = 87600
 Daily partition:- 365*10 = 3650
 
-** You can keet 3 year to 4 year data in standard layer and push other to glacier to efficient storage and processing.
+** You can keep 3 yr to 4 yr data in standard layer and push other to glacier to efficient storage and processing.
 ```
 
 \*\*Using IOManager for reading and writing the data to warehouse_location and transectional table.
@@ -90,22 +91,43 @@ Merge data from `summer_movies` and `summer_movie_genres`, and store into proces
 
 Read master data and load into warehouse table, in my case its transectional table.
 
-### Unit testing
+### Job
 
-Tests are in the `my_dagster_project_tests` directory and you can run tests using `pytest`:
+Bundled all components of the data flow into a job. This is helpful for manageing and setting up schedules.
+
+### Schedules
+
+Setup the schedule to run every monday
+
+## Testing
+
+### Assert Test
+
+When reading incremental data you would want to make sure high quality data is flowing into the pipeline. I have used `check_specs`, to make sure after doing operation
+data quality is correct. And severity not all data quality check needs to alert stakeholders.
+
+```bash
+yield AssetCheckResult(
+        passed=bool(df["tconst"].notnull().all()),
+        severity=AssetCheckSeverity.WARN,
+        description="key notnull",
+        metadata = {
+            "num_rows": len(df),
+            "num_empty": len(df["tconst"].notnull())
+        }
+    )
+```
+
+Data quality checks implemented:-
+
+1. Count
+2. Joining key not null
+
+### Unit Test
+
+Tests are in the `my_dagster_project_tests/test_assets` file and you can run tests using `pytest`. This is used when there is a new implementation and want to test that
+locally:
 
 ```bash
 pytest my_dagster_project_tests
 ```
-
-### Schedules and sensors
-
-If you want to enable Dagster [Schedules](https://docs.dagster.io/concepts/partitions-schedules-sensors/schedules) or [Sensors](https://docs.dagster.io/concepts/partitions-schedules-sensors/sensors) for your jobs, the [Dagster Daemon](https://docs.dagster.io/deployment/dagster-daemon) process must be running. This is done automatically when you run `dagster dev`.
-
-Once your Dagster Daemon is running, you can start turning on schedules and sensors for your jobs.
-
-## Deploy on Dagster Cloud
-
-The easiest way to deploy your Dagster project is to use Dagster Cloud.
-
-Check out the [Dagster Cloud Documentation](https://docs.dagster.cloud) to learn more.
