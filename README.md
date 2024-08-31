@@ -62,7 +62,7 @@ Open http://localhost:3000 with your browser to see the project.
 
 **Using IOManager for reading and writing the data to warehouse_location and transectional table.**
 
-why:- I/O managers in Dagster are used to handle the storage and retrieval of asset and op outputs, allowing you to separate business logic from I/O operations.
+Why:- I/O managers in Dagster are used to handle the storage and retrieval of asset and op outputs, allowing you to separate business logic from I/O operations.
 
 ### Extraction, (group_name="extract")
 
@@ -90,7 +90,7 @@ df['timestamp'] = df['timestamp'].apply(parse_date)
 
 3. summer_movies table is partitioned on `release_day` daily instead of hourly. With START_DATE = '2024-01-01'
    and END_DATE = '2024-01-12'
-   **why:- with a partition is created a metadata will also be maintained corresponding to it. When there are too many partitions, it can lead to overhead metadata and Small File Problem. this would not be ideal for distributed prosessing large dataset.**
+   **Why:- with a partition is created a metadata will also be maintained corresponding to it. When there are too many partitions, it can lead to overhead metadata and Small File Problem. this would not be ideal for distributed prosessing large dataset.**
 
 ```bash
 Consider 10 years of data
