@@ -2,9 +2,10 @@
 
 This dataset includes information on movies released during the summer months, typically regarded as the peak season for blockbuster films.
 
-**Why pick:- Easy to relate and play around, instead of picking F1 or Cricket data set.**
+**Why this dataset:- Easy to relate and play around, instead of picking F1 or Cricket data set.**
 
 **Input**
+
 summer_movies.csv ==> It has column information about movies released with columns like, name, release date, runtime, avg rating, votes, release date, timestamp. Here unique id is tconst
 
 **Release date, timestamp these both columns are manually generated**
