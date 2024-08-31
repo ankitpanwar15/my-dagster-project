@@ -54,6 +54,10 @@ Open http://localhost:3000 with your browser to see the project.
 
 **Credentials are already available, clone repo and run dagster. Auto expired after 7 days**
 
+## Sneak peek
+
+<img src="https://unsplash.com/photos/young-asian-travel-woman-is-enjoying-with-beautiful-place-in-bangkok-thailand-_Fqoswmdmoo" alt="Alt text">
+
 ## Flow
 
 ### Extraction, (group_name="extract")
