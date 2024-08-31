@@ -2,14 +2,16 @@
 
 This dataset includes information on movies released during the summer months, typically regarded as the peak season for blockbuster films.
 
-\*\*Why pick:- Easy to relate and play around, instead of picking F1 or Cricket data set.
+**Why pick:- Easy to relate and play around, instead of picking F1 or Cricket data set.**
 
+**Input**
 summer_movies.csv ==> It has column information about movies released with columns like, name, release date, runtime, avg rating, votes, release date, timestamp. Here unique id is tconst
 
-\*\* release date, timestamp these both columns are manually generated
+**Release date, timestamp these both columns are manually generated**
 
 summer_movie_genres.csv ==> It has imformation about the genres of the corresponding movies, with columns, tconst and genres.
 
+**Output**
 We want to get movie and there genres by joining these data set together.
 
 ## Getting started
@@ -38,7 +40,7 @@ Open http://localhost:3000 with your browser to see the project.
 2. Take help from this [video](https://youtu.be/TMGHOW8Hzvw?si=FMUGmkbhbglSOd5d) and get your db credentials.
 3. Provide DB credentials in `.env` file.
 
-FYI: Creds are already available, clone repo and run dagster.
+**Creds are already available, clone repo and run dagster.**
 
 ## Flow
 
@@ -68,7 +70,7 @@ df['timestamp'] = df['timestamp'].apply(parse_date)
 
 3. summer_movies table is partitioned on `release_day` daily instead of hourly. With START_DATE = '2024-01-01'
    and END_DATE = '2024-01-12'
-   \*\*why:- with a partition is created a metadata will also be maintained corresponding to it. When there are too many partitions, it can lead to overhead metadata and Small File Problem. this would not be ideal for distributed prosessing large dataset.
+   **why:- with a partition is created a metadata will also be maintained corresponding to it. When there are too many partitions, it can lead to overhead metadata and Small File Problem. this would not be ideal for distributed prosessing large dataset.**
 
 ```bash
 Consider 10 years of data
@@ -78,7 +80,7 @@ Daily partition:- 365*10 = 3650
 ** You can keep 3 yr to 4 yr data in standard layer and push other to glacier to efficient storage and processing.
 ```
 
-\*\*Using IOManager for reading and writing the data to warehouse_location and transectional table.
+**Using IOManager for reading and writing the data to warehouse_location and transectional table.**
 
 Better approach would be partition on `type/date` (e.g. hollywood/date)
 
@@ -86,7 +88,7 @@ Better approach would be partition on `type/date` (e.g. hollywood/date)
 
 Merge data from `summer_movies` and `summer_movie_genres`, and store into processed folder of warehouse location in paquet format.
 
-\*\* Why:- This would be master data that would be used by data science, downstream data team and populate warehouse.
+**Why:- This would be master data that would be used by data science, downstream data team and populate warehouse.**
 
 ### Loading, (group_name="load")
 
@@ -119,7 +121,7 @@ yield AssetCheckResult(
     )
 ```
 
-Data quality checks implemented:-
+**Data quality checks implemented**
 
 1. Count
 2. Joining key not null
