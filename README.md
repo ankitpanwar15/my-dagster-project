@@ -27,6 +27,11 @@ python -m venv myenv
 
 source myenv/bin/activate
 ```
+### pyarrow
+
+```bash
+pip install pyarrow
+```
 
 ### Dagster, version 1.7.7
 
